@@ -17,6 +17,7 @@ export function TransactionsProvider({ children }) {
     const [formData, setformData] = useState({ addressTo: "", amount: "", keyword: "", message: "" })
     const [currentAccount, setCurrentAccount] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [open, setOpen] = useState(false)
     const [transactionCount, setTransactionCount] = useState(localStorage.getItem("transactionCount"))
     const [transactions_UserOrders, setTransactions_UserOrders] = useState([]);
     const [transactions_FeedOrders, setTransactions_FeedOrders] = useState([]);
@@ -63,7 +64,7 @@ export function TransactionsProvider({ children }) {
           });
         }
 
-        console.log(structuredTransactions)
+        // console.log(structuredTransactions)
 
 
 
@@ -99,7 +100,7 @@ export function TransactionsProvider({ children }) {
             const transactionsContract = createEthereumContract()
             const availableTransactions = await transactionsContract.getPriceFeedOrderListBytes(0, 100)
             // console.log("availableTransactions")
-            console.log(availableTransactions)
+            // console.log(availableTransactions)
 
             var structuredTransactions =[];
             for(let i=0; i<availableTransactions.length; i++){
@@ -128,7 +129,7 @@ export function TransactionsProvider({ children }) {
               });
             }
     
-            console.log(structuredTransactions)
+            // console.log(structuredTransactions)
 
             setTransactions_FeedOrders(structuredTransactions)
             if (ethereum) {
@@ -192,45 +193,37 @@ export function TransactionsProvider({ children }) {
             throw new Error("No ethereum object")
         }
     }
-
-    async function sendTransaction() {
+    const sendTransactionDeposit = async () => {
         try {
-            if (ethereum) {
-                const { addressTo, amount, keyword, message } = formData
-                const transactionsContract = createEthereumContract()
-                const parsedAmount = ethers.utils.parseEther(amount)
+          if (ethereum) {
+            const { amount } = formData;
+            // console.log("amount: ", amount);
+            const transactionsContract = createEthereumContract();
+            const parsedAmount = ethers.utils.parseEther(amount);
+            // const parsedDealAmount = ethers.utils.parseEther(dealAmount);
+    
+            // const transactionHash = await transactionsContract.deposit({ value: parsedAmount._hex});
+            const transactionHash = await transactionsContract.testDepositETH({ value: parsedAmount});
+            // setIsLoading((prevState) => ({ ...prevState, deposit: true }));
+            setIsLoading(true);
+            setOpen(false)
 
-                await ethereum.request({
-                    method: "eth_sendTransaction",
-                    params: [{
-                        from: currentAccount,
-                        to: addressTo,
-                        gas: "0x5208",
-                        value: parsedAmount._hex,
-                    }],
-                })
-
-                const transactionHash = await transactionsContract.store(parsedAmount)
-
-                setIsLoading(true)
-                console.log(`Loading - ${transactionHash.hash}`)
-                await transactionHash.wait()
-                console.log(`Success - ${transactionHash.hash}`)
-                setIsLoading(false)
-
-                const transactionsCount = await transactionsContract.retrieve()
-
-                setTransactionCount(transactionsCount.toString())
-                // window.location.reload();
-            } else {
-                console.log("No ethereum object")
-            }
+            console.log(`Loading - ${transactionHash.hash}`);
+            await transactionHash.wait();
+            console.log(`Success - ${transactionHash.hash}`);
+            // setIsLoading((prevState) => ({ ...prevState, deposit: false }));
+            setIsLoading(false);
+            
+            // window.location.reload();
+          } else {
+            console.log("No ethereum object");
+          }
         } catch (error) {
-            console.log(error)
-
-            throw new Error("No ethereum object")
+          setOpen(false)
+          console.log(error);
+          throw new Error("No ethereum object");
         }
-    }
+      };
 
     // useEffect(() => {
     //     checkIfWalletIsConnect()
@@ -253,9 +246,12 @@ export function TransactionsProvider({ children }) {
                 transactions_FeedOrders,
                 currentAccount,
                 isLoading,
-                sendTransaction,
+                sendTransactionDeposit,
                 handleChange,
                 formData,
+                setformData,
+                open,
+                setOpen
             }}
         >
             {children}

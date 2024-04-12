@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import { orderList, table } from "../data/welcome"
 import "../styles/gradient.css"
 
+import { Loader } from ".";
+
 import { TransactionContext } from "../context/TransactionContext";
 
 function Table() {
-    const [open, setOpen] = useState(false)
+    // const [open, setOpen] = useState(false)
     const [list, setList] = useState([...table])
     const [detail, setDetail] = useState(null)
     const tableClass = "grid xl:grid-cols-[50px_minmax(200px,_1fr)_100px_100px_minmax(200px,_1fr)_minmax(200px,_1fr)_minmax(200px,_1fr)_100px] xl:gap-4 xl:py-3 xl:gap-2 py-1.5 grid-cols-[30px_minmax(100px,_1fr)_60px_60px_minmax(120px,_1fr)_minmax(120px,_1fr)_minmax(120px,_1fr)_60px]"
@@ -16,7 +18,7 @@ function Table() {
     // const [transactions_FeedOrders, setTransactions_FeedOrders] = useState([]);
 
 
-    const {handleChange, transactions_UserOrders, transactions_FeedOrders} = useContext(TransactionContext)
+    const {open, setOpen, isLoading, sendTransactionDeposit, handleChange, transactions_UserOrders, transactions_FeedOrders} = useContext(TransactionContext)
 
 
 
@@ -51,7 +53,8 @@ function Table() {
     }
 
     function handleDepositConfirm() {
-
+        sendTransactionDeposit()
+        // setOpen(false)
     }
 
     useEffect(() => {
@@ -95,6 +98,10 @@ function Table() {
            
 
 
+                
+                {isLoading
+                ? <Loader />
+                : <div/>}
 
 
 
@@ -133,6 +140,8 @@ function Table() {
                     </div>
                 </div>
             </div>
+
+
 
 
 
