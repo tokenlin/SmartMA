@@ -44,8 +44,6 @@ export function TransactionsProvider({ children }) {
         for(let i=0; i<availableTransactions.length; i++){
           const abi = new utils.AbiCoder();
 
-          // return abi.encode(_nonce, indexOfPriceFeedOrder, description, currentAmountA, currentAmountB, _userOrder.userInitialAmount, _userOrder.userDepositAmountA, _userOrder.userDepositAmountB, _userOrder.priceFeedAddress, _userOrder.paramsAddress, _userOrder.nonceBefore, _userOrder.nonceAfter);
-    
           const _transactionList = abi.decode(["uint", "uint", "string", "uint", "uint", "uint", "uint", "uint", "address", "address", "uint", "uint"], availableTransactions[i]);
           
           structuredTransactions.push({
@@ -64,22 +62,6 @@ export function TransactionsProvider({ children }) {
           });
         }
 
-        // console.log(structuredTransactions)
-
-
-
-        // const structuredTransactions = availableTransactions.map((transaction) => ({
-        //   addressTo: transaction.receiver,
-        //   addressFrom: transaction.sender,
-        //   timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
-        //   message: transaction.message,
-        //   keyword: transaction.keyword,
-        //   amount: parseInt(transaction.amount._hex) / (10 ** 18)
-        // }));
-
-
-        // console.log(structuredTransactions[0]);
-
         setTransactions_UserOrders(structuredTransactions);
       } else {
         console.log("Ethereum is not present");
@@ -90,23 +72,14 @@ export function TransactionsProvider({ children }) {
   };
 
 
-
-
-
-
-
     async function getAllTransactions_FeedOrders() {
         try {
             const transactionsContract = createEthereumContract()
             const availableTransactions = await transactionsContract.getPriceFeedOrderListBytes(0, 100)
-            // console.log("availableTransactions")
-            // console.log(availableTransactions)
-
+           
             var structuredTransactions =[];
             for(let i=0; i<availableTransactions.length; i++){
               const abi = new utils.AbiCoder();
-    
-              // return abi.encode(index, description, dataFeed, paramsAddress, _priceFeedOrder.tokenA, _priceFeedOrder.tokenB, _priceFeedOrder.initialTotalAmount, _priceFeedOrder.currentTotalAmountA, _priceFeedOrder.currentTotalAmountB, _priceFeedOrder.MA1, _priceFeedOrder.MA2, _priceFeedOrder.MAInterval, _priceFeedOrder.executionInterval, _priceFeedOrder.timeStamp);
     
               const _transactionList = abi.decode(["uint", "string", "address", "address", "address", "address", "uint", "uint", "uint", "uint32", "uint32", "uint32", "uint32", "uint128"], availableTransactions[i]);
               const MAInterval = _transactionList[11];
@@ -129,7 +102,6 @@ export function TransactionsProvider({ children }) {
               });
             }
     
-            // console.log(structuredTransactions)
 
             setTransactions_FeedOrders(structuredTransactions)
             if (ethereum) {

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import { orderList, table } from "../data/welcome"
-import "../styles/gradient.css"
 
 import { Loader } from ".";
 
@@ -20,22 +18,10 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
   );
   
 function Table() {
-    // const [open, setOpen] = useState(false)
-    // const [list, setList] = useState([...table])
     const [detail, setDetail] = useState(null)
-    // const tableClass = "grid xl:grid-cols-[50px_minmax(200px,_1fr)_100px_100px_minmax(200px,_1fr)_minmax(200px,_1fr)_minmax(200px,_1fr)_100px] xl:gap-4 xl:py-3 xl:gap-2 py-1.5 grid-cols-[30px_minmax(100px,_1fr)_60px_60px_minmax(120px,_1fr)_minmax(120px,_1fr)_minmax(120px,_1fr)_60px]"
     const tableClass = "grid xl:grid-cols-[50px_100px_100px_100px_minmax(100px,_1fr)_minmax(100px,_1fr)_minmax(200px,_1fr)_100px] xl:gap-4 xl:py-3 xl:gap-2 py-1.5 grid-cols-[30px_minmax(100px,_1fr)_60px_60px_minmax(120px,_1fr)_minmax(120px,_1fr)_minmax(120px,_1fr)_60px]"
 
-    const [orders, setOrders] = useState([...orderList])
-
-    // const [transactions_UserOrders, setTransactions_UserOrders] = useState([]);
-    // const [transactions_FeedOrders, setTransactions_FeedOrders] = useState([]);
-
-
     const {setformData, open, setOpen, isLoading, sendTransactionDeposit, handleChange, transactions_UserOrders, transactions_FeedOrders} = useContext(TransactionContext)
-
-
-
 
     function handleDeposit(index) {
         const item = transactions_FeedOrders[index]
@@ -59,7 +45,6 @@ function Table() {
 
     function handleDepositConfirm() {
         sendTransactionDeposit()
-        // setOpen(false)
     }
 
     useEffect(() => {
