@@ -28,8 +28,8 @@
 懒人的福音，中心化网格交易所的有力竞争对手，大额订单更信任的系统。
 
 ### 项目团队
-Team Leader & Solidity Contract： [Kevin Lin](https://github.com/tokenlin)
-UI Designer:    [Kevin Lin](https://github.com/Mt-Youya)
+Team Leader & Solidity Contract： [Kevin Lin](https://github.com/tokenlin)  
+UI Designer:    [优雅先森(Jay)](https://github.com/Mt-Youya)
 
 ### 发展规划
 1. 计划2024年5月份上线。
@@ -38,4 +38,4 @@ UI Designer:    [Kevin Lin](https://github.com/Mt-Youya)
 https://www.loom.com/share/fe8615b7a00144c096d20502d8f3c272?sid=9ae7e93b-dfe6-4756-997e-f344e0658636
 
 ### 联系方式
-[Send me an e-mail](lkw040535@gmail.com)
+lkw040535@gmail.com
